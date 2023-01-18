@@ -153,6 +153,9 @@
     <ClInclude Include="Inc\BufferHelpers.h">
       <Filter>Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\D3D12MemAlloc.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\CommonStates.cpp">
@@ -308,6 +311,9 @@
     <ClCompile Include="Src\ModelLoadCMO.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\D3D12MemAlloc.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\CompileShaders.cmd">
@@ -377,5 +383,10 @@
     <None Include="Src\Shaders\Skinning.fxh">
       <Filter>Src\Shaders\Shared</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Src\D3D12MemAlloc.natvis">
+      <Filter>Src</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>
