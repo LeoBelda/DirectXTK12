@@ -44,9 +44,12 @@
 
 #include <atomic>
 
+namespace D3D12MA { class Allocator; class Allocation; }
 
 namespace DirectX
 {
+    void SetLinearAllocatorAllocator(D3D12MA::Allocator *pAllocator);
+
     class LinearAllocatorPage
     {
     public:
@@ -82,6 +85,7 @@ namespace DirectX
         size_t                                  mOffset;
         size_t                                  mSize;
         Microsoft::WRL::ComPtr<ID3D12Resource>  mUploadResource;
+        Microsoft::WRL::ComPtr<D3D12MA::Allocation>  mUploadAllocation;
 
     private:
         std::atomic<int32_t>                    mRefCount;

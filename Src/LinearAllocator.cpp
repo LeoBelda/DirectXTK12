@@ -12,6 +12,9 @@
 #include "PlatformHelpers.h"
 #include "LinearAllocator.h"
 
+#include "D3D12MemAlloc.h"
+static D3D12MA::Allocator* s_MemAllocator = nullptr;
+
 // Set this to 1 to enable some additional debug validation
 #define VALIDATE_LISTS 0
 
@@ -21,6 +24,15 @@
 
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;
+
+
+//--------------------------------------------------------------------------------------
+void DirectX::SetLinearAllocatorAllocator(D3D12MA::Allocator *pAllocator)
+{
+    s_MemAllocator = pAllocator;
+}
+
+
 
 LinearAllocatorPage::LinearAllocatorPage() noexcept
     : pPrevPage(nullptr)
@@ -285,18 +297,38 @@ LinearAllocatorPage* LinearAllocator::FindPageForAlloc(
 
 LinearAllocatorPage* LinearAllocator::GetNewPage()
 {
-    const CD3DX12_HEAP_PROPERTIES uploadHeapProperties(D3D12_HEAP_TYPE_UPLOAD);
     const CD3DX12_RESOURCE_DESC bufferDesc = CD3DX12_RESOURCE_DESC::Buffer(m_increment);
 
     // Allocate the upload heap
     ComPtr<ID3D12Resource> spResource;
-    HRESULT hr = m_device->CreateCommittedResource(
-        &uploadHeapProperties,
-        D3D12_HEAP_FLAG_NONE,
-        &bufferDesc,
-        D3D12_RESOURCE_STATE_GENERIC_READ,
-        nullptr,
-        IID_GRAPHICS_PPV_ARGS(spResource.ReleaseAndGetAddressOf()));
+    ComPtr<D3D12MA::Allocation> spAllocation;
+    HRESULT hr;
+    if (s_MemAllocator)
+    {
+        D3D12MA::ALLOCATION_DESC AllocDesc = {};
+        AllocDesc.HeapType = D3D12_HEAP_TYPE_UPLOAD;
+
+        hr = s_MemAllocator->CreateResource(
+            &AllocDesc,
+            &bufferDesc,
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            spAllocation.ReleaseAndGetAddressOf(),
+            IID_GRAPHICS_PPV_ARGS(spResource.ReleaseAndGetAddressOf())
+        );
+    }
+    else
+    {
+        const CD3DX12_HEAP_PROPERTIES uploadHeapProperties(D3D12_HEAP_TYPE_UPLOAD);
+
+        hr = m_device->CreateCommittedResource(
+            &uploadHeapProperties,
+            D3D12_HEAP_FLAG_NONE,
+            &bufferDesc,
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            IID_GRAPHICS_PPV_ARGS(spResource.ReleaseAndGetAddressOf()));
+    }
     if (FAILED(hr))
     {
         if (hr != E_OUTOFMEMORY)
@@ -321,6 +353,7 @@ LinearAllocatorPage* LinearAllocator::GetNewPage()
     page->mGpuAddress = spResource->GetGPUVirtualAddress();
     page->mSize = m_increment;
     page->mUploadResource.Swap(spResource);
+    page->mUploadAllocation.Swap(spAllocation);
 
     // Set as head of the list
     page->pNextPage = m_unusedPages;
