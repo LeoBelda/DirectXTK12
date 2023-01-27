@@ -10343,7 +10343,7 @@ void Allocator::SetCurrentFrameIndex(UINT frameIndex)
     m_Pimpl->SetCurrentFrameIndex(frameIndex);
 }
 
-void Allocator::GetBudget(Budget* pLocalBudget, Budget* pNonLocalBudget)
+void Allocator::GetBudget(Budget* pLocalBudget, Budget* pNonLocalBudget) const
 {
     if (pLocalBudget == NULL && pNonLocalBudget == NULL)
     {
@@ -10353,7 +10353,7 @@ void Allocator::GetBudget(Budget* pLocalBudget, Budget* pNonLocalBudget)
     m_Pimpl->GetBudget(pLocalBudget, pNonLocalBudget);
 }
 
-void Allocator::CalculateStatistics(TotalStatistics* pStats)
+void Allocator::CalculateStatistics(TotalStatistics* pStats) const
 {
     D3D12MA_ASSERT(pStats);
     D3D12MA_DEBUG_GLOBAL_MUTEX_LOCK

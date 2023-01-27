@@ -1333,7 +1333,7 @@ public:
     Note that when using allocator from multiple threads, returned information may immediately
     become outdated.
     */
-    void GetBudget(Budget* pLocalBudget, Budget* pNonLocalBudget);
+    void GetBudget(Budget* pLocalBudget, Budget* pNonLocalBudget) const;
 
     /** \brief Retrieves statistics from current state of the allocator.
 
@@ -1345,7 +1345,7 @@ public:
     Note that when using allocator from multiple threads, returned information may immediately
     become outdated.
     */
-    void CalculateStatistics(TotalStatistics* pStats);
+    void CalculateStatistics(TotalStatistics* pStats) const;
 
     /** \brief Builds and returns statistics as a string in JSON format.
     * 
