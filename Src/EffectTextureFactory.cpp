@@ -148,6 +148,7 @@ size_t EffectTextureFactory::Impl::CreateTexture(_In_z_ const wchar_t* name, int
                 loadFlags,
                 textureEntry.mResource.ReleaseAndGetAddressOf(),
                 nullptr,
+                nullptr,
                 &textureEntry.mIsCubeMap);
             if (FAILED(hr))
             {
