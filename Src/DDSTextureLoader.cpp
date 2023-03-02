@@ -128,7 +128,7 @@ namespace
         _Out_ size_t& theight,
         _Out_ size_t& tdepth,
         _Out_ size_t& skipMip,
-        std::vector<D3D12_SUBRESOURCE_DATA>& initData)
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& initData)
     {
         if (!bitData)
         {
@@ -306,7 +306,7 @@ namespace
         DDS_LOADER_FLAGS loadFlags,
         _Outptr_ ID3D12Resource** texture,
         _Outptr_ D3D12MA::Allocation** allocation,
-        std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         _Out_opt_ bool* outIsCubeMap) noexcept(false)
     {
         HRESULT hr = S_OK;
@@ -668,7 +668,7 @@ HRESULT DirectX::LoadDDSTextureFromMemory(
     size_t ddsDataSize,
     ID3D12Resource** texture,
     D3D12MA::Allocation **allocation,
-    std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
     bool* isCubeMap)
@@ -698,7 +698,7 @@ HRESULT DirectX::LoadDDSTextureFromMemoryEx(
     DDS_LOADER_FLAGS loadFlags,
     ID3D12Resource** texture,
     D3D12MA::Allocation **allocation,
-    std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     DDS_ALPHA_MODE* alphaMode,
     bool* isCubeMap)
 {
@@ -760,7 +760,7 @@ HRESULT DirectX::LoadDDSTextureFromFile(
     ID3D12Resource** texture,
     D3D12MA::Allocation **allocation,
     std::unique_ptr<uint8_t[]>& ddsData,
-    std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     size_t maxsize,
     DDS_ALPHA_MODE* alphaMode,
     bool* isCubeMap)
@@ -789,7 +789,7 @@ HRESULT DirectX::LoadDDSTextureFromFileEx(
     ID3D12Resource** texture,
     D3D12MA::Allocation **allocation,
     std::unique_ptr<uint8_t[]>& ddsData,
-    std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     DDS_ALPHA_MODE* alphaMode,
     bool* isCubeMap)
 {
@@ -929,7 +929,7 @@ HRESULT DirectX::CreateDDSTextureFromMemoryEx(
         }
     }
 
-    std::vector<D3D12_SUBRESOURCE_DATA> subresources;
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA> subresources;
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,
@@ -1054,7 +1054,7 @@ HRESULT DirectX::CreateDDSTextureFromFileEx(
         }
     }
 
-    std::vector<D3D12_SUBRESOURCE_DATA> subresources;
+    std::pmr::vector<D3D12_SUBRESOURCE_DATA> subresources;
     hr = CreateTextureFromDDS(d3dDevice,
         header, bitData, bitSize, maxsize,
         resFlags, loadFlags,

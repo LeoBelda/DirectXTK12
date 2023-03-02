@@ -29,6 +29,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <memory_resource>
 #include <vector>
 
 namespace D3D12MA { class Allocator; class Allocation; }
@@ -70,7 +71,7 @@ namespace DirectX
         size_t ddsDataSize,
         _Outptr_ ID3D12Resource** texture,
         _Outptr_ D3D12MA::Allocation **allocation,
-        std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         size_t maxsize = 0,
         _Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
         _Out_opt_ bool* isCubeMap = nullptr);
@@ -81,7 +82,7 @@ namespace DirectX
         _Outptr_ ID3D12Resource** texture,
         _Outptr_ D3D12MA::Allocation **allocation,
         std::unique_ptr<uint8_t[]>& ddsData,
-        std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         size_t maxsize = 0,
         _Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
         _Out_opt_ bool* isCubeMap = nullptr);
@@ -120,7 +121,7 @@ namespace DirectX
         DDS_LOADER_FLAGS loadFlags,
         _Outptr_ ID3D12Resource** texture,
         _Outptr_ D3D12MA::Allocation **allocation,
-        std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         _Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
         _Out_opt_ bool* isCubeMap = nullptr);
 
@@ -133,7 +134,7 @@ namespace DirectX
         _Outptr_ ID3D12Resource** texture,
         _Outptr_ D3D12MA::Allocation **allocation,
         std::unique_ptr<uint8_t[]>& ddsData,
-        std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
+        std::pmr::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         _Out_opt_ DDS_ALPHA_MODE* alphaMode = nullptr,
         _Out_opt_ bool* isCubeMap = nullptr);
 
